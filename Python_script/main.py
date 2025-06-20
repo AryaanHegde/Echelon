@@ -4,7 +4,7 @@ from kinematics import *
 
 lengths = [100, 100, 80]
 
-simulator = Interface([15, 30, 60], lengths)  # use realistic pixel lengths
+simulator = Interface([15, 30, 60], lengths)
 simulator.start_up()
 running = True
 
