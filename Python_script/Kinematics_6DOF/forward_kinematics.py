@@ -58,6 +58,7 @@ def solve(lengths, c_space):
 
     H_eb = H_1b @ H_21 @ H_32 @ H_43 @ H_54 @ H_65 @ H_e6
     R_eb = H_eb[:3, :3]
+    # print(f"R_eb = {R_eb}")
     phi,theta,psi = matrix_to_euler(R_eb)
     x,y,z = H_eb[:3,3]
 
