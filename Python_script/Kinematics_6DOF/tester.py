@@ -9,15 +9,22 @@ success = True
 iterations = 1000
 
 for test_iter in range(iterations):
-    test_case = [random.uniform(-180, 180) for _ in range(6)]
-    op_space = forward_kinematics.solve(lengths, test_case)
-    c_space = inverse_kinematics.solve(lengths, op_space)
-    calculated_op_space = forward_kinematics.solve(lengths, c_space)
+    # Generate random c-space
+    theta = [random.uniform(-180, 180) for _ in range(6)]
+    # Calculate the operation space of the input via forward kinematics
+    x_1 = forward_kinematics.solve(lengths, theta)
+    # Determine a potential solution for the previous operational space via inverse kinematics    
+    theta_prime = inverse_kinematics.solve(lengths, x_1)
+    # Calculate the operation space of the potential solution via forward kinematics
+    x_2 = forward_kinematics.solve(lengths, theta_prime)
+
+    # Verify if the potential solution is indeed a solution by comparing the two op-spaces
     for i in range(6):
-        if abs(op_space[i] - calculated_op_space[i]) > 0.001:
+        if abs(x_2[i] - x_1[i]) > 0.001:
             print(f"Failure at test iteration {test_iter}")
-            print(f"Original op space = {op_space}")
-            print(f"Calculated op space = {calculated_op_space}")
+            print(f"X_1 = {x_1}")
+            print(f"X_2 = {x_2}")
+            print("\n")
             success = False
             break
 

@@ -4,9 +4,11 @@ from angle_conversion import*
 from euler_angles import*
 
 def solve(lengths, c_space):
+    # Extract individual link lengths and joint angles (in radians)
     l1, l2, l3, l4, l5, l6 = lengths
     t1, t2, t3, t4, t5, t6 = deg_to_rad(c_space)
 
+    # Define the individual homogeneous transformation matrices
     H_1b = np.array([
         [math.cos(t1), -math.sin(t1), 0, 0],
         [math.sin(t1), math.cos(t1), 0, 0],
@@ -56,11 +58,18 @@ def solve(lengths, c_space):
         [0, 0, 0, 1]
     ])
 
+    # Calculate the transformation from the end-effector frame to the base frame
     H_eb = H_1b @ H_21 @ H_32 @ H_43 @ H_54 @ H_65 @ H_e6
+
+    # Extract the rotation matrix
     R_eb = H_eb[:3, :3]
-    # print(f"R_eb = {R_eb}")
+    # Extract the position vector of the origin of the end effector with respect to the base frame
+    pos_ee_origin = H_eb[:3, 3]
+
+    # Get the Euler angles that make the rotation matrix
     phi,theta,psi = matrix_to_euler(R_eb)
-    x,y,z = H_eb[:3,3]
+    # Get the Cartesian coordinates of end effector origin with respect to base frame
+    x,y,z = pos_ee_origin
 
     return [x,y,z,phi,theta,psi]
 
