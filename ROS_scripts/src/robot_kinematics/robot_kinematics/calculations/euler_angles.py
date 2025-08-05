@@ -1,5 +1,5 @@
 import numpy as np
-from angle_conversion import*
+from .angle_conversion import*
 import math
 
 def euler_to_matrix(angles):
@@ -20,7 +20,6 @@ def euler_to_matrix(angles):
         [0, math.sin(phi), math.cos(phi)]
     ])
     matrix = R_z @ R_y @ R_x
-
 
     return matrix
 
